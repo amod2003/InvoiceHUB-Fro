@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/amodchauhan/Desktop/INVBackend/app/core/**)",
+      "Read(//Users/amodchauhan/Desktop/INVBackend/app/routers/**)",
+      "Read(//Users/amodchauhan/Desktop/INVBackend/app/models/**)",
+      "Read(//Users/amodchauhan/Desktop/INVBackend/app/middleware/**)"
+    ]
+  }
+}

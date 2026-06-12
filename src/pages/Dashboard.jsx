@@ -18,6 +18,7 @@ import {
   FileText,
   Crown,
   Sparkles,
+  Plus,
 } from 'lucide-react';
 
 import Card, { CardHeader, CardBody } from '../components/ui/Card';
@@ -35,30 +36,67 @@ import { useAuth } from '../hooks/useAuth';
 const monthShort = (m) =>
   ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m] || '';
 
-function KPICard({ icon: Icon, label, value, accent, delta }) {
-  const accents = {
-    indigo: 'from-indigo-500/20 to-indigo-500/5 text-indigo-300 border-indigo-500/20',
-    cyan: 'from-cyan-400/20 to-cyan-400/5 text-cyan-300 border-cyan-400/20',
-    violet: 'from-violet-500/20 to-violet-500/5 text-violet-300 border-violet-500/20',
-    danger: 'from-red-500/20 to-red-500/5 text-red-300 border-red-500/20',
-  };
+const accentStyles = {
+  indigo: {
+    border: 'border-t-pink-500',
+    iconBg: 'bg-pink-500/15 text-pink-300',
+    glow: 'hover:shadow-[0_0_40px_-10px_rgba(236,72,153,0.6)]',
+  },
+  cyan: {
+    border: 'border-t-violet-500',
+    iconBg: 'bg-violet-500/15 text-violet-300',
+    glow: 'hover:shadow-glow-violet',
+  },
+  violet: {
+    border: 'border-t-purple-500',
+    iconBg: 'bg-purple-500/15 text-purple-300',
+    glow: 'hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.6)]',
+  },
+  danger: {
+    border: 'border-t-red-500',
+    iconBg: 'bg-red-500/15 text-red-300',
+    glow: 'hover:shadow-glow-danger',
+  },
+};
+
+function KPICard({ icon: Icon, label, value, accent, trend, trendUp }) {
+  const s = accentStyles[accent];
   return (
-    <Card className="p-5 hover:border-white/[0.15] transition group">
-      <div className="flex items-start justify-between">
-        <div
-          className={`w-11 h-11 rounded-xl bg-gradient-to-br border ${accents[accent]} flex items-center justify-center`}
-        >
+    <div
+      className={`glass-card rounded-2xl p-6 border-t-2 ${s.border} hover:border-white/[0.15] hover:scale-[1.02] transition-all duration-200 ${s.glow} group`}
+    >
+      <div className="flex items-start justify-between mb-5">
+        <div className={`w-11 h-11 rounded-xl ${s.iconBg} flex items-center justify-center`}>
           <Icon className="w-5 h-5" />
         </div>
-        {delta && (
-          <Badge className="bg-status-success/10 text-emerald-300 border-status-success/30">
-            <ArrowUpRight className="w-3 h-3" /> {delta}
-          </Badge>
+        {trend && (
+          <span
+            className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${
+              trendUp
+                ? 'bg-status-success/10 text-emerald-300'
+                : 'bg-status-danger/10 text-red-300'
+            }`}
+          >
+            <ArrowUpRight className={`w-3 h-3 ${trendUp ? '' : 'rotate-180'}`} />
+            {trend}
+          </span>
         )}
       </div>
-      <p className="text-xs text-text-muted uppercase tracking-wider mt-5">{label}</p>
-      <p className="text-2xl font-bold text-text-primary mt-1">{value}</p>
-    </Card>
+      <p className="text-xs text-text-muted uppercase tracking-widest font-medium">{label}</p>
+      <p className="text-2xl font-bold text-text-primary mt-1.5 tabular-nums">{value}</p>
+    </div>
+  );
+}
+
+function CustomTooltip({ active, payload, label, currency }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="glass-card-elevated rounded-xl px-4 py-3 shadow-card-lg border border-white/[0.12]">
+      <p className="text-xs text-text-muted mb-1">{label}</p>
+      <p className="text-sm font-bold text-text-primary">
+        {formatCurrency(payload[0].value, currency)}
+      </p>
+    </div>
   );
 }
 
@@ -98,9 +136,7 @@ export default function Dashboard() {
         if (!cancelled) setLoading(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   if (loading) return <CenterSpinner label="Loading your workspace…" />;
@@ -111,29 +147,44 @@ export default function Dashboard() {
       </Card>
     );
 
+  const firstName = user?.full_name?.split(' ')[0] || 'there';
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
   return (
     <div className="space-y-6">
       {/* Hero greeting */}
-      <Card className="relative overflow-hidden p-8">
-        <div className="absolute inset-0 ambient-glow opacity-60" />
-        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="relative overflow-hidden rounded-2xl glass-card p-8" style={{borderTop: '1px solid rgba(168,85,247,0.3)'}}>
+        <div className="absolute inset-0 opacity-80" style={{background: 'radial-gradient(ellipse 80% 70% at 10% 20%, rgba(124,58,237,0.28), transparent 55%), radial-gradient(ellipse 60% 80% at 90% 80%, rgba(236,72,153,0.22), transparent 55%), radial-gradient(ellipse 50% 60% at 50% 50%, rgba(168,85,247,0.15), transparent 60%)'}} />
+        <div className="absolute inset-0 grid-pattern opacity-20" />
+        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <p className="text-xs font-medium text-accent-cyan uppercase tracking-widest mb-2">
-              <Sparkles className="inline w-3.5 h-3.5 mr-1" /> Your workspace
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2" style={{color: '#c084fc'}}>
+              <Sparkles className="w-3.5 h-3.5" />
+              Your workspace · {today}
             </p>
-            <h2 className="text-2xl font-bold text-text-primary">
-              Hello, {user?.full_name?.split(' ')[0] || 'there'} —{' '}
-              <span className="gradient-text">here's how things look today.</span>
+            <h2 className="text-3xl font-bold text-text-primary leading-tight">
+              Hello, {firstName} —{' '}
+              <span style={{background: 'linear-gradient(135deg, #a855f7, #ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>
+                here's how things look today.
+              </span>
             </h2>
+            {stats?.overdue_count > 0 && (
+              <p className="mt-2 text-sm text-status-warning flex items-center gap-1.5">
+                <AlertCircle className="w-4 h-4" />
+                {stats.overdue_count} invoice{stats.overdue_count > 1 ? 's' : ''} overdue — follow up soon
+              </p>
+            )}
           </div>
           <Link
             to="/invoices/new"
-            className="inline-flex items-center gap-2 px-5 h-11 rounded-xl gradient-primary text-white font-medium shadow-glow-indigo hover:shadow-glow-violet hover:scale-[1.02] transition"
+            className="inline-flex items-center gap-2 px-6 h-11 rounded-xl text-white font-semibold hover:scale-[1.03] transition-all shrink-0"
+            style={{background: 'linear-gradient(135deg, #7c3aed, #a855f7, #ec4899)', boxShadow: '0 0 32px -8px rgba(168,85,247,0.7)'}}
           >
-            Create Invoice <ArrowUpRight className="w-4 h-4" />
+            <Plus className="w-4 h-4" />
+            New Invoice
           </Link>
         </div>
-      </Card>
+      </div>
 
       {/* KPI grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -158,138 +209,168 @@ export default function Dashboard() {
         <KPICard icon={Users} label="Clients" value={stats.client_count} accent="violet" />
       </div>
 
-      {/* Chart + side panels */}
+      {/* Chart + Top Clients */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <Card className="xl:col-span-2">
-          <CardHeader
-            title="Revenue (last 12 months)"
-            subtitle="Paid invoices, grouped by month"
-          />
-          <CardBody>
+        {/* Revenue chart */}
+        <div className="xl:col-span-2 glass-card rounded-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/[0.06]">
+            <div>
+              <p className="text-base font-semibold text-text-primary">Revenue</p>
+              <p className="text-xs text-text-muted mt-0.5">Paid invoices, last 12 months</p>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {['3M', '6M', '12M'].map((p, i) => (
+                <button
+                  key={p}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                    i === 2
+                      ? 'bg-white/[0.08] text-text-primary border border-white/[0.12]'
+                      : 'text-text-muted hover:text-text-secondary hover:bg-white/[0.04]'
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="px-2 py-4">
             {chart.length === 0 ? (
-              <EmptyState
-                icon={TrendingUp}
-                title="No revenue yet"
-                description="Send your first invoice and mark it paid to see revenue charted here."
-              />
+              <div className="px-4 pb-4">
+                <EmptyState
+                  icon={TrendingUp}
+                  title="No revenue yet"
+                  description="Send your first invoice and mark it paid to see revenue charted here."
+                />
+              </div>
             ) : (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chart} margin={{ left: -10, right: 8, top: 8, bottom: 0 }}>
                     <defs>
                       <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#a855f7" stopOpacity={0.5} />
-                        <stop offset="100%" stopColor="#06b6d4" stopOpacity={0.02} />
+                        <stop offset="0%" stopColor="#a855f7" stopOpacity={0.55} />
+                        <stop offset="50%" stopColor="#ec4899" stopOpacity={0.25} />
+                        <stop offset="100%" stopColor="#ec4899" stopOpacity={0.02} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
                     <XAxis dataKey="label" tick={{ fill: '#8a8a98', fontSize: 11 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fill: '#8a8a98', fontSize: 11 }} axisLine={false} tickLine={false} />
-                    <Tooltip
-                      contentStyle={{
-                        background: '#13131a',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        borderRadius: 12,
-                        color: '#f5f5fa',
-                      }}
-                      formatter={(v) => [formatCurrency(v, currency), 'Revenue']}
-                    />
+                    <Tooltip content={<CustomTooltip currency={currency} />} />
                     <Area
                       type="monotone"
                       dataKey="revenue"
                       stroke="#a855f7"
                       strokeWidth={2.5}
                       fill="url(#revGrad)"
+                      dot={false}
+                      activeDot={{ r: 5, fill: '#ec4899', strokeWidth: 0 }}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             )}
-          </CardBody>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader title="Top Clients" subtitle="Ranked by paid revenue" />
-          <CardBody className="space-y-3">
+        {/* Top Clients */}
+        <div className="glass-card rounded-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/[0.06]">
+            <div>
+              <p className="text-base font-semibold" style={{background: 'linear-gradient(135deg, #a855f7, #ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Top Clients</p>
+              <p className="text-xs text-text-muted mt-0.5">Ranked by paid revenue</p>
+            </div>
+            <Link to="/clients" className="text-xs font-medium transition" style={{color: '#c084fc'}}>
+              View all →
+            </Link>
+          </div>
+          <div className="p-4 space-y-2">
             {topClients.length === 0 ? (
               <p className="text-sm text-text-muted text-center py-8">No paid invoices yet.</p>
             ) : (
               topClients.map((c, i) => (
-                <div key={c.client_id} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                  <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center text-xs font-bold text-white">
-                    {c.client_name?.slice(0, 1).toUpperCase()}
+                <div
+                  key={c.client_id}
+                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/[0.04] transition-all group"
+                >
+                  <div className="relative shrink-0">
+                    <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center text-xs font-bold text-white">
+                      {c.client_name?.slice(0, 1).toUpperCase()}
+                    </div>
+                    {i === 0 && (
+                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-bg-surface flex items-center justify-center">
+                        <Crown className="w-2.5 h-2.5 text-amber-400" />
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-text-primary truncate">{c.client_name}</p>
-                    <p className="text-xs text-text-muted">{c.invoice_count} invoices</p>
-                  </div>
-                  <div className="text-right">
-                    {i === 0 && <Crown className="w-3.5 h-3.5 text-accent-cyan ml-auto mb-0.5" />}
-                    <p className="text-sm font-semibold text-text-primary">
-                      {formatCurrency(c.revenue, currency)}
+                    <p className="text-sm font-medium text-text-primary truncate group-hover:text-purple-300 transition">
+                      {c.client_name}
                     </p>
+                    <p className="text-[11px] text-text-muted">{c.invoice_count} invoices</p>
                   </div>
+                  <p className="text-sm font-bold text-text-primary tabular-nums">
+                    {formatCurrency(c.revenue, currency)}
+                  </p>
                 </div>
               ))
             )}
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </div>
 
-      {/* Recent invoices */}
-      <Card>
-        <CardHeader
-          title="Recent Invoices"
-          subtitle="Your latest 5 invoices"
-          action={
-            <Link
-              to="/invoices"
-              className="text-xs text-accent-cyan font-medium hover:underline"
-            >
-              View all →
-            </Link>
-          }
-        />
-        <CardBody>
+      {/* Recent Invoices */}
+      <div className="glass-card rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/[0.06]">
+          <div>
+            <p className="text-base font-semibold" style={{background: 'linear-gradient(135deg, #a855f7, #ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Recent Invoices</p>
+            <p className="text-xs text-text-muted mt-0.5">Your latest 5 invoices</p>
+          </div>
+          <Link to="/invoices" className="text-xs font-medium transition" style={{color: '#c084fc'}}>
+            View all →
+          </Link>
+        </div>
+        <div className="divide-y divide-white/[0.04]">
           {recent.length === 0 ? (
-            <EmptyState
-              icon={FileText}
-              title="No invoices yet"
-              description="Create your first invoice to get started."
-            />
-          ) : (
-            <div className="divide-y divide-white/[0.04]">
-              {recent.map((inv) => (
-                <Link
-                  key={inv.id}
-                  to={`/invoices/${inv.id}`}
-                  className="flex items-center justify-between py-3 group hover:bg-white/[0.02] -mx-2 px-2 rounded-lg transition"
-                >
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-10 h-10 rounded-lg bg-bg-elevated border border-border-subtle flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-text-muted" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-text-primary group-hover:text-accent-cyan transition">
-                        {inv.invoice_number}
-                      </p>
-                      <p className="text-xs text-text-muted">{formatRelative(inv.created_at)}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Badge dot className={invoiceStatusClass(inv.status)}>
-                      {inv.status}
-                    </Badge>
-                    <p className="text-sm font-semibold text-text-primary tabular-nums">
-                      {formatCurrency(inv.total, inv.currency || currency)}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+            <div className="p-6">
+              <EmptyState
+                icon={FileText}
+                title="No invoices yet"
+                description="Create your first invoice to get started."
+              />
             </div>
+          ) : (
+            recent.map((inv) => (
+              <Link
+                key={inv.id}
+                to={`/invoices/${inv.id}`}
+                className="flex items-center justify-between px-6 py-4 hover:bg-white/[0.03] transition-all group"
+              >
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border-subtle flex items-center justify-center shrink-0">
+                    <FileText className="w-4 h-4 text-text-muted" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-text-primary group-hover:gradient-text transition font-mono">
+                      {inv.invoice_number}
+                    </p>
+                    <p className="text-xs text-text-muted">{formatRelative(inv.created_at)}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Badge dot className={invoiceStatusClass(inv.status)}>
+                    {inv.status}
+                  </Badge>
+                  <p className="text-sm font-bold text-text-primary tabular-nums">
+                    {formatCurrency(inv.total, inv.currency || currency)}
+                  </p>
+                  <ArrowUpRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition -rotate-45 group-hover:rotate-0" />
+                </div>
+              </Link>
+            ))
           )}
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

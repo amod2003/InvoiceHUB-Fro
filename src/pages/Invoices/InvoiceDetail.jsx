@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import Card, { CardBody, CardHeader } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
 import Modal from '../../components/ui/Modal';
@@ -27,6 +26,21 @@ import { paymentApi } from '../../api/paymentApi';
 import { invoiceStatusClass } from '../../utils/statusColors';
 import { apiErrorMessage } from '../../api/axiosInstance';
 import { formatRelative } from '../../utils/dateUtils';
+
+function ActionRow({ icon: Icon, label, description, children }) {
+  return (
+    <div className="flex items-center gap-4 p-4 rounded-xl glass-card hover:bg-white/[0.05] transition-all group">
+      <div className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center shrink-0 group-hover:bg-white/[0.1] transition-all">
+        <Icon className="w-4 h-4 text-text-secondary" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-text-primary">{label}</p>
+        {description && <p className="text-[11px] text-text-muted mt-0.5">{description}</p>}
+      </div>
+      <div className="shrink-0">{children}</div>
+    </div>
+  );
+}
 
 export default function InvoiceDetail() {
   const { id } = useParams();
@@ -75,24 +89,11 @@ export default function InvoiceDetail() {
     }
   };
 
-  const handleSend = async () => {
-    await action('send', () => invoiceApi.send(invoice.id), 'Invoice email sent');
-    load();
-  };
-  const handleMarkPaid = async () => {
-    await action('paid', () => invoiceApi.markPaid(invoice.id), 'Marked as paid');
-    load();
-  };
-  const handleRemind = async () => {
-    await action('remind', () => invoiceApi.remind(invoice.id), 'Reminder sent');
-    load();
-  };
+  const handleSend = async () => { await action('send', () => invoiceApi.send(invoice.id), 'Invoice email sent'); load(); };
+  const handleMarkPaid = async () => { await action('paid', () => invoiceApi.markPaid(invoice.id), 'Marked as paid'); load(); };
+  const handleRemind = async () => { await action('remind', () => invoiceApi.remind(invoice.id), 'Reminder sent'); load(); };
   const handleDuplicate = async () => {
-    const newInv = await action(
-      'duplicate',
-      () => invoiceApi.duplicate(invoice.id),
-      'Invoice duplicated'
-    );
+    const newInv = await action('duplicate', () => invoiceApi.duplicate(invoice.id), 'Invoice duplicated');
     if (newInv?.id) navigate(`/invoices/${newInv.id}`);
   };
   const handleDelete = async () => {
@@ -117,11 +118,7 @@ export default function InvoiceDetail() {
     }
   };
   const handleCreateLink = async () => {
-    const result = await action(
-      'link',
-      () => paymentApi.createLink(invoice.id),
-      'Payment link created'
-    );
+    const result = await action('link', () => paymentApi.createLink(invoice.id), 'Payment link created');
     if (result?.payment_link) {
       navigator.clipboard.writeText(result.payment_link).catch(() => {});
       load();
@@ -136,6 +133,7 @@ export default function InvoiceDetail() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <Link
           to="/invoices"
@@ -143,101 +141,107 @@ export default function InvoiceDetail() {
         >
           <ArrowLeft className="w-4 h-4" /> Back to invoices
         </Link>
-        <Badge dot className={invoiceStatusClass(invoice.status)}>
-          {invoice.status}
-        </Badge>
+        <div className="flex items-center gap-3">
+          <p className="text-xs text-text-muted">
+            Updated {formatRelative(invoice.updated_at)}
+          </p>
+          <Badge dot className={invoiceStatusClass(invoice.status)}>
+            {invoice.status}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Invoice number hero */}
+      <div className="relative overflow-hidden glass-card rounded-2xl px-8 py-5 border-gradient-top">
+        <div className="absolute inset-0 mesh-bg opacity-50" />
+        <div className="relative flex items-center justify-between">
+          <div>
+            <p className="text-xs text-text-muted uppercase tracking-widest mb-1">Invoice</p>
+            <h1 className="text-3xl font-bold gradient-text font-mono">{invoice.invoice_number}</h1>
+          </div>
+          <Badge dot className={`${invoiceStatusClass(invoice.status)} text-sm px-4 py-2`}>
+            {invoice.status}
+          </Badge>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Preview */}
+        {/* Preview — takes 2 cols */}
         <div className="lg:col-span-2">
-          <InvoicePreview invoice={invoice} client={client} tenant={tenant} />
+          <div className="rounded-2xl overflow-hidden shadow-card-lg ring-1 ring-white/[0.08]">
+            <InvoicePreview invoice={invoice} client={client} tenant={tenant} />
+          </div>
         </div>
 
         {/* Sidebar — actions */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader title="Actions" subtitle={`Last updated ${formatRelative(invoice.updated_at)}`} />
-            <CardBody className="space-y-2">
+        <div className="space-y-4">
+          {/* Primary actions */}
+          <div className="glass-card rounded-2xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-white/[0.06]">
+              <p className="text-sm font-semibold text-text-primary">Actions</p>
+            </div>
+            <div className="p-4 space-y-2">
               {isDraft && (
-                <Button
-                  className="w-full"
-                  icon={Send}
-                  loading={acting === 'send'}
-                  onClick={handleSend}
-                >
-                  Send to Client
-                </Button>
+                <ActionRow icon={Send} label="Send to Client" description="Email this invoice to the client">
+                  <Button size="sm" loading={acting === 'send'} onClick={handleSend}>
+                    Send
+                  </Button>
+                </ActionRow>
               )}
               {isUnpaid && (
-                <Button
-                  variant="secondary"
-                  className="w-full"
-                  icon={CheckCircle2}
-                  loading={acting === 'paid'}
-                  onClick={handleMarkPaid}
-                >
-                  Mark as Paid
-                </Button>
+                <ActionRow icon={CheckCircle2} label="Mark as Paid" description="Record a manual payment">
+                  <Button size="sm" variant="secondary" loading={acting === 'paid'} onClick={handleMarkPaid}>
+                    Mark Paid
+                  </Button>
+                </ActionRow>
               )}
               {isOverdue && (
-                <Button
-                  variant="secondary"
-                  className="w-full"
-                  icon={BellRing}
-                  loading={acting === 'remind'}
-                  onClick={handleRemind}
-                >
-                  Send Reminder
-                </Button>
+                <ActionRow icon={BellRing} label="Send Reminder" description="Nudge the client by email">
+                  <Button size="sm" variant="secondary" loading={acting === 'remind'} onClick={handleRemind}>
+                    Remind
+                  </Button>
+                </ActionRow>
               )}
               {isUnpaid && (
-                <Button
-                  variant="secondary"
-                  className="w-full"
+                <ActionRow
                   icon={Link2}
-                  loading={acting === 'link'}
-                  onClick={handleCreateLink}
+                  label={invoice.payment_link ? 'Refresh Stripe Link' : 'Create Stripe Link'}
+                  description="Generate an online payment URL"
                 >
-                  {invoice.payment_link ? 'Refresh Stripe Link' : 'Create Stripe Link'}
-                </Button>
+                  <Button size="sm" variant="secondary" loading={acting === 'link'} onClick={handleCreateLink}>
+                    {invoice.payment_link ? 'Refresh' : 'Create'}
+                  </Button>
+                </ActionRow>
               )}
-              <Button
-                variant="outline"
-                className="w-full"
-                icon={Download}
-                loading={acting === 'pdf'}
-                onClick={handlePdf}
-              >
-                Download PDF
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                icon={Copy}
-                loading={acting === 'duplicate'}
-                onClick={handleDuplicate}
-              >
-                Duplicate
-              </Button>
+              <ActionRow icon={Download} label="Download PDF" description="Save invoice as PDF file">
+                <Button size="sm" variant="outline" loading={acting === 'pdf'} onClick={handlePdf}>
+                  PDF
+                </Button>
+              </ActionRow>
+              <ActionRow icon={Copy} label="Duplicate" description="Create a copy of this invoice">
+                <Button size="sm" variant="outline" loading={acting === 'duplicate'} onClick={handleDuplicate}>
+                  Copy
+                </Button>
+              </ActionRow>
               {isDraft && (
-                <Button
-                  variant="danger"
-                  className="w-full"
-                  icon={Trash2}
-                  onClick={() => setConfirmDelete(true)}
-                >
-                  Delete Draft
-                </Button>
+                <ActionRow icon={Trash2} label="Delete Draft" description="Permanently remove this invoice">
+                  <Button size="sm" variant="danger" onClick={() => setConfirmDelete(true)}>
+                    Delete
+                  </Button>
+                </ActionRow>
               )}
-            </CardBody>
-          </Card>
+            </div>
+          </div>
 
+          {/* Payment link card */}
           {invoice.payment_link && (
-            <Card>
-              <CardHeader title="Payment Link" />
-              <CardBody className="space-y-2">
-                <div className="rounded-lg bg-bg-elevated border border-border-subtle p-3 text-xs text-text-secondary break-all font-mono">
+            <div className="glass-card-elevated rounded-2xl overflow-hidden border-gradient-top">
+              <div className="px-5 py-4 border-b border-white/[0.06]">
+                <p className="text-sm font-semibold gradient-text">Payment Link</p>
+                <p className="text-xs text-text-muted mt-0.5">Share this link to get paid online</p>
+              </div>
+              <div className="p-4 space-y-3">
+                <div className="rounded-xl bg-bg-base border border-border-subtle p-3 text-xs text-text-muted break-all font-mono leading-relaxed">
                   {invoice.payment_link}
                 </div>
                 <div className="flex gap-2">
@@ -248,7 +252,7 @@ export default function InvoiceDetail() {
                     icon={Copy}
                     onClick={() => {
                       navigator.clipboard.writeText(invoice.payment_link);
-                      toast.success('Copied');
+                      toast.success('Copied to clipboard');
                     }}
                   >
                     Copy
@@ -263,8 +267,8 @@ export default function InvoiceDetail() {
                     Open
                   </Button>
                 </div>
-              </CardBody>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -275,9 +279,7 @@ export default function InvoiceDetail() {
         title="Delete this draft?"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setConfirmDelete(false)}>
-              Cancel
-            </Button>
+            <Button variant="ghost" onClick={() => setConfirmDelete(false)}>Cancel</Button>
             <Button variant="danger" icon={Trash2} loading={acting === 'delete'} onClick={handleDelete}>
               Delete
             </Button>
@@ -286,7 +288,7 @@ export default function InvoiceDetail() {
       >
         <p className="text-sm text-text-secondary">
           Invoice <span className="font-mono text-text-primary">{invoice.invoice_number}</span> will
-          be permanently removed.
+          be permanently removed. This cannot be undone.
         </p>
       </Modal>
     </div>

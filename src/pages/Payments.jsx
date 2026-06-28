@@ -148,7 +148,7 @@ export default function Payments() {
                         )}
                       </TD>
                       <TD>
-                        <Badge className="bg-white/5 text-text-secondary border-border-subtle">
+                        <Badge className="bg-text-primary/[0.05] text-text-secondary border-border-subtle">
                           {paymentMethodLabel(p.method)}
                         </Badge>
                       </TD>
@@ -166,7 +166,7 @@ export default function Payments() {
                 </TBody>
               </Table>
 
-              <div className="flex items-center justify-between px-6 py-4 border-t border-white/[0.04]">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-text-primary/[0.06]">
                 <p className="text-xs text-text-muted">Page {page + 1}</p>
                 <div className="flex items-center gap-2">
                   <Button

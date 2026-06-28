@@ -146,7 +146,7 @@ export default function ClientList() {
                     <TR key={c.id} onClick={() => navigate(`/clients/${c.id}/edit`)}>
                       <TD>
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center text-xs font-semibold text-white">
+                          <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center text-xs font-semibold text-bg-base">
                             {c.name?.slice(0, 1).toUpperCase()}
                           </div>
                           <div>
@@ -180,7 +180,7 @@ export default function ClientList() {
                         <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
                           <button
                             onClick={() => navigate(`/clients/${c.id}/edit`)}
-                            className="p-1.5 rounded-md text-text-muted hover:text-accent-cyan hover:bg-white/5 transition"
+                            className="p-1.5 rounded-md text-text-muted hover:text-accent-cyan hover:bg-text-primary/[0.05] transition"
                           >
                             <Pencil className="w-3.5 h-3.5" />
                           </button>
@@ -197,7 +197,7 @@ export default function ClientList() {
                 </TBody>
               </Table>
 
-              <div className="flex items-center justify-between px-6 py-4 border-t border-white/[0.04]">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-text-primary/[0.06]">
                 <p className="text-xs text-text-muted">
                   Page {page + 1} · Showing {filtered.length} {filtered.length === 1 ? 'client' : 'clients'}
                 </p>

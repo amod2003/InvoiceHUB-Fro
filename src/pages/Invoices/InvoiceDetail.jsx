@@ -29,8 +29,8 @@ import { formatRelative } from '../../utils/dateUtils';
 
 function ActionRow({ icon: Icon, label, description, children }) {
   return (
-    <div className="flex items-center gap-4 p-4 rounded-xl glass-card hover:bg-white/[0.05] transition-all group">
-      <div className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center shrink-0 group-hover:bg-white/[0.1] transition-all">
+    <div className="flex items-center gap-4 p-4 rounded-xl glass-card hover:bg-text-primary/[0.06] transition-all group">
+      <div className="w-9 h-9 rounded-xl bg-text-primary/[0.07] flex items-center justify-center shrink-0 group-hover:bg-text-primary/[0.12] transition-all">
         <Icon className="w-4 h-4 text-text-secondary" />
       </div>
       <div className="flex-1 min-w-0">
@@ -152,12 +152,12 @@ export default function InvoiceDetail() {
       </div>
 
       {/* Invoice number hero */}
-      <div className="relative overflow-hidden glass-card rounded-2xl px-8 py-5 border-gradient-top">
-        <div className="absolute inset-0 mesh-bg opacity-50" />
+      <div className="relative overflow-hidden rounded-2xl px-8 py-5 border-gradient-top bg-text-primary/[0.03] border border-text-primary/[0.10]">
+        <div className="absolute inset-0 dot-pattern opacity-40" />
         <div className="relative flex items-center justify-between">
           <div>
-            <p className="text-xs text-text-muted uppercase tracking-widest mb-1">Invoice</p>
-            <h1 className="text-3xl font-bold gradient-text font-mono">{invoice.invoice_number}</h1>
+            <p className="text-[10px] text-text-muted uppercase tracking-widest mb-1">Invoice</p>
+            <h1 className="text-3xl font-bold text-text-primary font-mono tracking-tight">{invoice.invoice_number}</h1>
           </div>
           <Badge dot className={`${invoiceStatusClass(invoice.status)} text-sm px-4 py-2`}>
             {invoice.status}
@@ -168,7 +168,7 @@ export default function InvoiceDetail() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Preview — takes 2 cols */}
         <div className="lg:col-span-2">
-          <div className="rounded-2xl overflow-hidden shadow-card-lg ring-1 ring-white/[0.08]">
+          <div className="rounded-2xl overflow-hidden shadow-card-lg ring-1 ring-text-primary/[0.08]">
             <InvoicePreview invoice={invoice} client={client} tenant={tenant} />
           </div>
         </div>
@@ -176,8 +176,8 @@ export default function InvoiceDetail() {
         {/* Sidebar — actions */}
         <div className="space-y-4">
           {/* Primary actions */}
-          <div className="glass-card rounded-2xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-white/[0.06]">
+          <div className="rounded-2xl overflow-hidden bg-text-primary/[0.03] border border-text-primary/[0.09]">
+            <div className="px-5 py-4 border-b border-text-primary/[0.07]">
               <p className="text-sm font-semibold text-text-primary">Actions</p>
             </div>
             <div className="p-4 space-y-2">
@@ -235,9 +235,9 @@ export default function InvoiceDetail() {
 
           {/* Payment link card */}
           {invoice.payment_link && (
-            <div className="glass-card-elevated rounded-2xl overflow-hidden border-gradient-top">
-              <div className="px-5 py-4 border-b border-white/[0.06]">
-                <p className="text-sm font-semibold gradient-text">Payment Link</p>
+            <div className="rounded-2xl overflow-hidden border-gradient-top bg-text-primary/[0.05] border border-text-primary/[0.11]">
+              <div className="px-5 py-4 border-b border-text-primary/[0.07]">
+                <p className="text-sm font-semibold text-text-primary">Payment Link</p>
                 <p className="text-xs text-text-muted mt-0.5">Share this link to get paid online</p>
               </div>
               <div className="p-4 space-y-3">

@@ -24,18 +24,13 @@ const steps = [
   { label: 'Notes & Terms', icon: Eye },
 ];
 
-function SectionCard({ icon: Icon, title, subtitle, action, children, accent = 'indigo' }) {
-  const accents = {
-    indigo: 'text-indigo-300',
-    violet: 'text-violet-300',
-    cyan: 'text-cyan-300',
-  };
+function SectionCard({ icon: Icon, title, subtitle, action, children }) {
   return (
-    <div className="glass-card rounded-2xl overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+    <div className="rounded-2xl overflow-hidden bg-text-primary/[0.03] border border-text-primary/[0.09]">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-text-primary/[0.07]">
         <div className="flex items-center gap-3">
-          <div className={`${accents[accent]}`}>
-            <Icon className="w-4.5 h-4.5" />
+          <div className="text-text-muted">
+            <Icon className="w-4 h-4" />
           </div>
           <div>
             <p className="text-sm font-semibold text-text-primary">{title}</p>
@@ -130,7 +125,7 @@ export default function InvoiceCreate() {
       {/* Page title */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-text-primary">New Invoice</h2>
+          <h2 className="text-2xl font-bold text-text-primary tracking-tight">New Invoice</h2>
           <p className="text-sm text-text-muted mt-0.5">Fill in the details to create your invoice</p>
         </div>
       </div>
@@ -143,8 +138,8 @@ export default function InvoiceCreate() {
             <div key={step.label} className="flex items-center gap-2">
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${
                 i === 0
-                  ? 'glass-card-elevated border-indigo-500/30 text-indigo-300'
-                  : 'glass-card border-white/[0.06] text-text-muted'
+                  ? 'bg-text-primary text-bg-base border-text-primary'
+                  : 'bg-text-primary/[0.04] border-text-primary/[0.09] text-text-muted'
               }`}>
                 <Icon className="w-3.5 h-3.5" />
                 {step.label}
@@ -164,7 +159,7 @@ export default function InvoiceCreate() {
           <SectionCard icon={FileText} title="Details" subtitle="Who is this invoice for?" accent="indigo">
             <div className="space-y-4">
               {clients.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-border-strong p-5 flex items-center justify-between bg-white/[0.01]">
+                <div className="rounded-xl border border-dashed border-border-strong p-5 flex items-center justify-between bg-text-primary/[0.02]">
                   <div className="flex items-center gap-2.5 text-sm text-text-muted">
                     <Users className="w-4 h-4" /> No clients yet — add one first.
                   </div>
@@ -222,7 +217,7 @@ export default function InvoiceCreate() {
             }
           >
             <div className="space-y-1">
-              <div className="flex items-center gap-2 pb-3 text-[10px] uppercase tracking-widest text-text-muted border-b border-white/[0.05]">
+              <div className="flex items-center gap-2 pb-3 text-[10px] uppercase tracking-widest text-text-muted border-b border-text-primary/[0.07]">
                 <span className="flex-1">Description</span>
                 <span className="w-20 text-right">Qty</span>
                 <span className="w-24 text-right">Unit</span>
@@ -230,7 +225,7 @@ export default function InvoiceCreate() {
                 <span className="w-28 text-right pr-1">Amount</span>
                 <span className="w-7" />
               </div>
-              <div className="divide-y divide-white/[0.04]">
+              <div className="divide-y divide-text-primary/[0.06]">
                 {draft.line_items.map((item, idx) => (
                   <LineItemRow
                     key={idx}
@@ -271,9 +266,9 @@ export default function InvoiceCreate() {
         <div className="space-y-4">
           <div className="lg:sticky lg:top-6 space-y-4">
             {/* Summary card */}
-            <div className="border-gradient-top glass-card-elevated rounded-2xl overflow-hidden shadow-card-lg">
-              <div className="px-6 py-4 border-b border-white/[0.06]">
-                <p className="text-sm font-semibold gradient-text">Summary</p>
+            <div className="border-gradient-top rounded-2xl overflow-hidden shadow-card-lg bg-text-primary/[0.05] border border-text-primary/[0.11]">
+              <div className="px-6 py-4 border-b border-text-primary/[0.07]">
+                <p className="text-sm font-semibold text-text-primary">Summary</p>
                 <p className="text-xs text-text-muted mt-0.5">Invoice total breakdown</p>
               </div>
               <div className="p-6 space-y-4">
@@ -284,7 +279,7 @@ export default function InvoiceCreate() {
                   total={total}
                   currency={draft.currency}
                 />
-                <div className="pt-2 border-t border-white/[0.06]">
+                <div className="pt-2 border-t border-text-primary/[0.07]">
                   <Input
                     type="number"
                     step="0.01"

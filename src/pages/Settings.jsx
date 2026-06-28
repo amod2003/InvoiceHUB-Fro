@@ -141,7 +141,7 @@ export default function Settings() {
               Logo
             </p>
             <div className="flex items-center gap-4 p-4 rounded-xl bg-bg-elevated border border-border-subtle">
-              <div className="w-16 h-16 rounded-xl bg-bg-base border border-white/5 flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 rounded-xl bg-bg-base border border-text-primary/[0.05] flex items-center justify-center overflow-hidden">
                 {tenant?.settings?.logo_url ? (
                   <img src={tenant.settings.logo_url} alt="Logo" className="w-full h-full object-cover" />
                 ) : (

@@ -90,7 +90,7 @@ export default function InvoiceList() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-text-primary">Invoices</h2>
+          <h2 className="text-2xl font-bold text-text-primary tracking-tight">Invoices</h2>
           <p className="text-sm text-text-muted mt-0.5">
             {invoices.length > 0 ? `${invoices.length} invoice${invoices.length > 1 ? 's' : ''} found` : 'All invoices across your workspace'}
           </p>
@@ -101,17 +101,17 @@ export default function InvoiceList() {
       </div>
 
       {/* Main card */}
-      <div className="glass-card rounded-2xl overflow-hidden">
+      <div className="rounded-2xl overflow-hidden bg-text-primary/[0.03] border border-text-primary/[0.09]">
         {/* Filter bar */}
-        <div className="flex flex-wrap items-center gap-2 px-6 py-4 border-b border-white/[0.06]">
+        <div className="flex flex-wrap items-center gap-2 px-6 py-4 border-b border-text-primary/[0.07]">
           {/* Status pills */}
           <div className="flex flex-wrap items-center gap-1.5">
             <button
               onClick={() => setStatusFilter('')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all duration-150 ${
                 statusFilter === ''
-                  ? 'bg-white/[0.1] text-white border-white/[0.2] shadow-glow-indigo'
-                  : 'bg-transparent text-text-muted border-border-subtle hover:text-text-primary hover:bg-white/[0.04]'
+                  ? 'bg-text-primary/[0.10] text-text-primary border-text-primary/[0.20] shadow-glow-indigo'
+                  : 'bg-transparent text-text-muted border-border-subtle hover:text-text-primary hover:bg-text-primary/[0.05]'
               }`}
             >
               All
@@ -123,7 +123,7 @@ export default function InvoiceList() {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all duration-150 capitalize ${
                   statusFilter === s
                     ? `${invoiceStatusClass(s)} shadow-sm`
-                    : 'bg-transparent text-text-muted border-border-subtle hover:text-text-primary hover:bg-white/[0.04]'
+                    : 'bg-transparent text-text-muted border-border-subtle hover:text-text-primary hover:bg-text-primary/[0.05]'
                 }`}
               >
                 {statusFilter !== s && (
@@ -196,7 +196,7 @@ export default function InvoiceList() {
                     <TR
                       key={inv.id}
                       onClick={() => navigate(`/invoices/${inv.id}`)}
-                      className="hover:bg-white/[0.03] cursor-pointer transition-all"
+                      className="hover:bg-text-primary/[0.04] cursor-pointer transition-all"
                     >
                       <TD>
                         <p className="text-sm font-mono font-semibold text-text-primary">
@@ -209,7 +209,7 @@ export default function InvoiceList() {
                       <TD>
                         {c ? (
                           <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-xl gradient-primary flex items-center justify-center text-[11px] font-bold text-white shrink-0">
+                            <div className="w-8 h-8 rounded-xl gradient-primary flex items-center justify-center text-[11px] font-bold text-bg-base shrink-0">
                               {c.name?.slice(0, 1).toUpperCase()}
                             </div>
                             <div>
@@ -244,7 +244,7 @@ export default function InvoiceList() {
             </Table>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between px-6 py-4 border-t border-white/[0.06]">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-text-primary/[0.07]">
               <p className="text-xs text-text-muted">
                 Page <span className="text-text-secondary font-medium">{page + 1}</span> · {invoices.length} {invoices.length === 1 ? 'invoice' : 'invoices'}
               </p>
@@ -252,17 +252,17 @@ export default function InvoiceList() {
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="w-8 h-8 rounded-xl flex items-center justify-center border border-border-subtle text-text-muted hover:text-text-primary hover:border-border-strong hover:bg-white/[0.04] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                  className="w-8 h-8 rounded-xl flex items-center justify-center border border-border-subtle text-text-muted hover:text-text-primary hover:border-border-strong hover:bg-text-primary/[0.05] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <span className="px-3 h-8 rounded-xl flex items-center justify-center glass-card border border-white/[0.1] text-xs font-medium text-text-primary min-w-[2rem]">
+                <span className="px-3 h-8 rounded-xl flex items-center justify-center glass-card border border-text-primary/[0.12] text-xs font-medium text-text-primary min-w-[2rem]">
                   {page + 1}
                 </span>
                 <button
                   onClick={() => setPage((p) => p + 1)}
                   disabled={invoices.length < PAGE_SIZE}
-                  className="w-8 h-8 rounded-xl flex items-center justify-center border border-border-subtle text-text-muted hover:text-text-primary hover:border-border-strong hover:bg-white/[0.04] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                  className="w-8 h-8 rounded-xl flex items-center justify-center border border-border-subtle text-text-muted hover:text-text-primary hover:border-border-strong hover:bg-text-primary/[0.05] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>

@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useThemeStore } from './store/themeStore';
 
 import ProtectedRoute, { PublicOnlyRoute } from './components/layout/ProtectedRoute';
 import AppLayout from './components/layout/AppLayout';
@@ -15,6 +17,12 @@ import Payments from './pages/Payments';
 import Settings from './pages/Settings';
 
 export default function App() {
+  const { theme } = useThemeStore();
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
   return (
     <div className="relative min-h-screen">
       {/* Ambient background */}

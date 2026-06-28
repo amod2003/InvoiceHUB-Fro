@@ -2,14 +2,15 @@ import { Loader2 } from 'lucide-react';
 
 const variants = {
   primary:
-    'bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 text-white shadow-glow-indigo hover:shadow-glow-violet hover:scale-[1.02] active:scale-[0.98]',
+    'bg-text-primary text-bg-base font-semibold hover:bg-text-primary/90 active:scale-[0.98]',
   secondary:
-    'bg-white/[0.06] text-text-primary border border-white/10 hover:bg-white/[0.1] hover:border-white/20',
-  ghost: 'bg-transparent text-text-secondary hover:bg-white/[0.05] hover:text-text-primary',
+    'bg-text-primary/[0.06] text-text-primary border border-text-primary/[0.12] hover:bg-text-primary/[0.10] hover:border-text-primary/[0.22]',
+  ghost:
+    'bg-transparent text-text-secondary hover:bg-text-primary/[0.05] hover:text-text-primary',
   danger:
-    'bg-status-danger/10 text-red-300 border border-status-danger/30 hover:bg-status-danger/20',
+    'bg-status-danger/10 text-red-500 border border-status-danger/30 hover:bg-status-danger/20',
   outline:
-    'bg-transparent text-text-primary border border-border-subtle hover:border-accent-indigo/60 hover:text-white',
+    'bg-transparent text-text-primary border border-border-strong hover:border-text-primary/40',
 };
 
 const sizes = {
@@ -34,7 +35,7 @@ export default function Button({
     <button
       type={type}
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 focus-visible:ring-2 focus-visible:ring-text-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base ${variants[variant]} ${sizes[size]} ${className}`}
       {...rest}
     >
       {loading ? (

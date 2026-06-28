@@ -17,7 +17,7 @@ const Input = forwardRef(function Input(
         )}
         <input
           ref={ref}
-          className={`w-full h-10 ${Icon ? 'pl-10' : 'pl-3.5'} pr-3.5 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary placeholder:text-text-muted transition-all focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 ${error ? 'border-status-danger/60' : ''} ${className}`}
+          className={`w-full h-10 ${Icon ? 'pl-10' : 'pl-3.5'} pr-3.5 rounded-xl bg-bg-elevated border border-border-subtle text-sm text-text-primary placeholder:text-text-muted transition-all focus:border-white/30 focus:bg-bg-surface focus:ring-2 focus:ring-white/10 ${error ? 'border-status-danger/60' : ''} ${className}`}
           {...rest}
         />
       </div>

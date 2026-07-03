@@ -2,9 +2,9 @@ import { create } from 'zustand';
 
 const blankItem = () => ({
   description: '',
-  quantity: 1,
-  unit_price: 0,
-  tax_percent: 0,
+  quantity: '',
+  unit_price: '',
+  tax_percent: '',
   amount: 0,
 });
 
@@ -17,7 +17,7 @@ export const useInvoiceStore = create((set, get) => ({
     discount: 0,
     notes: '',
     terms: '',
-    currency: 'USD',
+    currency: 'INR',
     is_recurring: false,
     recurrence: null,
   },
@@ -57,7 +57,7 @@ export const useInvoiceStore = create((set, get) => ({
         discount: 0,
         notes: '',
         terms: '',
-        currency: 'USD',
+        currency: 'INR',
         is_recurring: false,
         recurrence: null,
       },

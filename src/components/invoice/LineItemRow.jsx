@@ -18,16 +18,18 @@ export default function LineItemRow({ item, index, currency, onChange, onRemove,
         step="0.01"
         min="0.01"
         value={item.quantity}
-        onChange={(e) => onChange(index, { quantity: parseFloat(e.target.value) || 0 })}
-        className="w-20 h-9 px-2 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary text-right tabular-nums focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 outline-none transition"
+        onChange={(e) => onChange(index, { quantity: e.target.value })}
+        placeholder="Qty"
+        className="w-20 h-9 px-2 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary text-right tabular-nums placeholder:text-text-muted focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 outline-none transition"
       />
       <input
         type="number"
         step="0.01"
         min="0"
         value={item.unit_price}
-        onChange={(e) => onChange(index, { unit_price: parseFloat(e.target.value) || 0 })}
-        className="w-24 h-9 px-2 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary text-right tabular-nums focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 outline-none transition"
+        onChange={(e) => onChange(index, { unit_price: e.target.value })}
+        placeholder="Price"
+        className="w-24 h-9 px-2 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary text-right tabular-nums placeholder:text-text-muted focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 outline-none transition"
       />
       <input
         type="number"
@@ -35,8 +37,9 @@ export default function LineItemRow({ item, index, currency, onChange, onRemove,
         min="0"
         max="100"
         value={item.tax_percent}
-        onChange={(e) => onChange(index, { tax_percent: parseFloat(e.target.value) || 0 })}
-        className="w-16 h-9 px-2 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary text-right tabular-nums focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 outline-none transition"
+        onChange={(e) => onChange(index, { tax_percent: e.target.value })}
+        placeholder="Tax%"
+        className="w-16 h-9 px-2 rounded-lg bg-bg-elevated border border-border-subtle text-sm text-text-primary text-right tabular-nums placeholder:text-text-muted focus:border-accent-indigo focus:bg-bg-surface focus:ring-2 focus:ring-accent-indigo/20 outline-none transition"
       />
       <div className="w-28 text-right text-sm font-semibold text-text-primary tabular-nums pr-1">
         {formatCurrency(amount, currency)}

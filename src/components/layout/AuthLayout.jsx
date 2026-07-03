@@ -63,9 +63,11 @@ export default function AuthLayout({ children, eyebrow, heading }) {
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-text-primary flex items-center justify-center shrink-0">
-            <Zap className="w-5 h-5 text-bg-base" strokeWidth={2.5} />
-          </div>
+          <img
+            src="/invoicehub-logo.svg"
+            alt="InvoiceHub"
+            className="w-12 h-12 rounded-xl object-cover shrink-0"
+          />
           <div>
             <span className="text-base font-bold text-text-primary block leading-none">InvoiceHub</span>
             <span className="text-[9px] text-text-muted uppercase tracking-widest">Billing Platform</span>

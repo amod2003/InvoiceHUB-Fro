@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, FileText, Users, CreditCard,
-  Settings as SettingsIcon, LogOut, Zap,
+  Settings as SettingsIcon, LogOut,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -50,9 +50,11 @@ export default function Sidebar() {
     <aside className="hidden lg:flex flex-col w-72 shrink-0 border-r border-border-subtle bg-bg-surface transition-colors duration-200">
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 h-[68px] border-b border-border-subtle">
-        <div className="w-9 h-9 rounded-xl bg-text-primary flex items-center justify-center shrink-0">
-          <Zap className="w-4 h-4 text-bg-base" strokeWidth={2.5} />
-        </div>
+        <img
+          src="/invoicehub-logo.svg"
+          alt="InvoiceHub"
+          className="w-10 h-10 rounded-xl object-cover shrink-0"
+        />
         <div>
           <p className="text-sm font-bold text-text-primary leading-none tracking-tight">InvoiceHub</p>
           <p className="text-[10px] text-text-muted mt-1 tracking-widest uppercase font-medium">

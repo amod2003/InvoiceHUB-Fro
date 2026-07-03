@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <rect width="500" height="500" fill="#0d5c30"/>
+
+  <!-- INVOICEHUB title -->
+  <text x="250" y="90" font-family="'Arial Black', 'Impact', sans-serif" font-size="52" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle" letter-spacing="8">INVOICEHUB</text>
+
+  <!-- Clipboard body -->
+  <rect x="110" y="120" width="160" height="210" rx="8" ry="8"
+        fill="none" stroke="#e8e0cc" stroke-width="5"/>
+  <!-- Clipboard clip -->
+  <rect x="160" y="108" width="60" height="25" rx="6" ry="6"
+        fill="none" stroke="#e8e0cc" stroke-width="4"/>
+  <!-- Lines on clipboard -->
+  <line x1="135" y1="165" x2="245" y2="165" stroke="#e8e0cc" stroke-width="3.5"/>
+  <line x1="135" y1="185" x2="245" y2="185" stroke="#e8e0cc" stroke-width="3.5"/>
+  <line x1="135" y1="205" x2="200" y2="205" stroke="#e8e0cc" stroke-width="3.5"/>
+
+  <!-- Money bag circle -->
+  <circle cx="190" cy="265" r="38" fill="none" stroke="#e8e0cc" stroke-width="4.5"/>
+  <!-- $ sign -->
+  <text x="190" y="277" font-family="'Arial Black', sans-serif" font-size="34" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle">$</text>
+
+  <!-- Hand outline -->
+  <path d="M80 355 Q90 330 115 325 L200 318 Q220 316 225 330 Q230 345 210 348 L175 350 Q195 352 195 365 Q195 378 175 378 L155 376 Q170 378 170 390 Q170 402 152 402 L100 400 Q82 398 76 378 Z"
+        fill="none" stroke="#e8e0cc" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Dotted line -->
+  <line x1="80" y1="420" x2="270" y2="420" stroke="#e8e0cc" stroke-width="2.5" stroke-dasharray="6,5"/>
+
+  <!-- Tagline: WORK SMART. -->
+  <text x="340" y="210" font-family="'Arial Black', 'Impact', sans-serif" font-size="32" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle" letter-spacing="2">WORK</text>
+  <text x="340" y="248" font-family="'Arial Black', 'Impact', sans-serif" font-size="32" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle" letter-spacing="2">SMART.</text>
+  <!-- GET -->
+  <text x="340" y="295" font-family="'Arial Black', 'Impact', sans-serif" font-size="40" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle" letter-spacing="2">GET</text>
+  <!-- PAID -->
+  <text x="340" y="340" font-family="'Arial Black', 'Impact', sans-serif" font-size="40" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle" letter-spacing="2">PAID</text>
+  <!-- FASTER. -->
+  <text x="340" y="380" font-family="'Arial Black', 'Impact', sans-serif" font-size="28" font-weight="900"
+        fill="#e8e0cc" text-anchor="middle" letter-spacing="2">FASTER.</text>
+
+  <!-- Button outline -->
+  <rect x="285" y="400" width="130" height="36" rx="18" ry="18"
+        fill="#e8e0cc" opacity="0.18" stroke="#e8e0cc" stroke-width="2.5"/>
+</svg>
